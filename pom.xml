@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>ru.aplana.autotest</groupId>
+    <artifactId>onetest</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version> 3.6.0</version>
+        </dependency>
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.12</version>
+    </dependency>
+    </dependencies>
+
+  <!--  <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+            <executions>
+                <execution>
+                    <phase>validate</phase>
+                    <goals>
+                        <goal>run</goal>
+                    </goals>
+                    <configuration>
+                        <tasks>
+                            <echo>Current Browser is: ${app.env}</echo>
+                        </tasks>
+                    </configuration>
+                </execution>
+            </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>FireFox</id>
+            <properties>
+                <app.env>FireFox</app.env>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>Chrome</id>
+            <properties>
+                <app.env>Chrome</app.env>
+            </properties>
+        </profile>
+        <profile>
+            <id>IE</id>
+            <properties>
+                <app.env>IE</app.env>
+            </properties>
+        </profile>
+    </profiles>
+    -->
+
+
+
+</project>
