@@ -18,53 +18,19 @@
         <version>4.12</version>
     </dependency>
     </dependencies>
-
-  <!--  <build>
+         <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.8</version>
-            <executions>
-                <execution>
-                    <phase>validate</phase>
-                    <goals>
-                        <goal>run</goal>
-                    </goals>
-                    <configuration>
-                        <tasks>
-                            <echo>Current Browser is: ${app.env}</echo>
-                        </tasks>
-                    </configuration>
-                </execution>
-            </executions>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M3</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <driver>chrome</driver>
+                    </systemPropertyVariables>
+                </configuration>
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>FireFox</id>
-            <properties>
-                <app.env>FireFox</app.env>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>Chrome</id>
-            <properties>
-                <app.env>Chrome</app.env>
-            </properties>
-        </profile>
-        <profile>
-            <id>IE</id>
-            <properties>
-                <app.env>IE</app.env>
-            </properties>
-        </profile>
-    </profiles>
-    -->
-
-
 
 </project>
