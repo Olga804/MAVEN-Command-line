@@ -31,20 +31,22 @@ public class JuniteTest {
     }
 
     @BeforeClass
-    public static void setUp() throws Exception {       
+    public static void setUp() throws Exception {
         final String path = System.getProperty("driver"); //"Chrome";
-        
+
         if (path.equals("firefox")){
             System.setProperty("webdriver.gecko.driver", "drv/geckodriver.exe");
             driver = new FirefoxDriver() ;
 
-        }if(path.equals("chrome")){
+        }else if(path.equals("chrome")){
             System.setProperty("webdriver.chrome.driver", "drv/chromedriver.exe");
             driver = new ChromeDriver();
 
-        } if (path.equals("ie")){
-            System.setProperty("webdriver.ie.driver", "drv/IEDriverServer.exe");
+        }else if (path.equals("ie")){
+            System.setProperty("webdriver.ie.driver", "drv/IEDriverServer32_380.exe");
             driver = new InternetExplorerDriver();
+        }else{
+            System.out.println("Браузер не найден");
         }
 
         baseUrl = "https://www.rgs.ru/";
@@ -52,8 +54,10 @@ public class JuniteTest {
         driver.manage().window().maximize();
         driver.get(baseUrl + "/");
         driver.findElement(By.xpath("//ol[contains(@class,'rgs-menu')]/li/*[@class=\"hidden-xs\"]")).click();
-        driver.findElement(By.xpath("//*[contains(text(),'ДМС')]")).click();
         Wait<WebDriver> wait = new WebDriverWait(driver, 5, 1000);
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//*[contains(text(),'ДМС')]"))));
+        driver.findElement(By.xpath("//*[contains(text(),'ДМС')]")).click();
+
         wait.until(ExpectedConditions.visibilityOf(
                 driver.findElement(By.xpath("//*[contains(text(),'Отправить заявку')][contains(@class,'btn')]"))));
         driver.findElement(By.xpath("//*[contains(text(),'Отправить заявку')][contains(@class,'btn')]")).click();
@@ -81,8 +85,8 @@ public class JuniteTest {
         fillField(By.name("MiddleName"), middleName);
         new Select(driver.findElement(By.name("Region"))).selectByVisibleText("Москва");
         fillField(By.name("Email"), "qwertyqwerty");
-        driver.findElement(By.xpath("(//INPUT[@type='text'])[6]")).click();
-        fillField(By.xpath("(//INPUT[@type='text'])[6]"), "9876543210");
+        driver.findElement(By.xpath("//label[contains (text(),'Телефон')]/following-sibling::*")).click();
+        fillField(By.xpath("//label[contains (text(),'Телефон')]/following-sibling::*"), "9876543210");
         fillField(By.name("Comment"), "test");
         driver.findElement(By.cssSelector("input.checkbox")).click();
         driver.findElement(By.id("button-m")).click();
@@ -97,11 +101,15 @@ public class JuniteTest {
 
         assertEquals("+7 (987) 654-32-10", driver.findElement(By.xpath("(//INPUT[@type='text'])[6]")).getAttribute("value"));
 
-
+        assertEquals(true, driver.findElement(By.cssSelector("input.checkbox")).isSelected());
         assertEquals("Москва",
                 new Select(driver.findElement(By.name("Region"))).getAllSelectedOptions().get(0).getText());
         assertEquals("Введите адрес электронной почты",
                 driver.findElement(By.xpath("//*[text()='Эл. почта']/..//span[@class='validation-error-text']")).getText());
+    }
+    @After
+    public  void last(){
+    driver.findElement(By.cssSelector("input.checkbox")).click();
     }
     @AfterClass
     public static void tearDown() throws Exception {
@@ -115,3 +123,4 @@ public class JuniteTest {
 
 
 }
+
