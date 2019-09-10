@@ -20,19 +20,6 @@ public class JuniteTest {
     private static WebDriver driver;
     private static String baseUrl;
 
-    private String lastName;
-    private String firstName;
-    private   String middleName;
-
-    public JuniteTest(String lastName, String firstName, String middleName) {
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.middleName = middleName;
-    }
-
-
-
-
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -78,7 +65,14 @@ public class JuniteTest {
                 {"Иванов", "Иван", "Иванович"},{"Петрова", "Анна", "Владимировна"},{"Акулёнок", "Туру", "Руруру"}
         };
         return Arrays.asList(data);
+
     }
+    @Parameterized.Parameter
+    public String lastName;
+    @Parameterized.Parameter(1)
+    public String firstName;
+    @Parameterized.Parameter(2)
+    public String middleName;
 
 
 
@@ -128,4 +122,5 @@ public class JuniteTest {
 
 
 }
+
 
