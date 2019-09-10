@@ -22,13 +22,17 @@ public class JuniteTest {
 
     private String lastName;
     private String firstName;
-    private String middleName;
+    private   String middleName;
 
     public JuniteTest(String lastName, String firstName, String middleName) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.middleName = middleName;
     }
+
+
+
+
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -46,14 +50,15 @@ public class JuniteTest {
             System.setProperty("webdriver.ie.driver", "drv/IEDriverServer32_380.exe");
             driver = new InternetExplorerDriver();
         }else{
-            System.out.println("Браузер не найден");
+            Assert.assertNotNull("Браузер не найден", driver);
+            //System.out.println("Браузер не найден");
         }
 
         baseUrl = "https://www.rgs.ru/";
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         driver.manage().window().maximize();
         driver.get(baseUrl + "/");
-        driver.findElement(By.xpath("//ol[contains(@class,'rgs-menu')]/li/*[@class=\"hidden-xs\"]")).click();
+        driver.findElement(By.xpath("//ol[contains(@class,'rgs-menu')]/li/*[@class='hidden-xs']")).click();
         Wait<WebDriver> wait = new WebDriverWait(driver, 5, 1000);
         wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//*[contains(text(),'ДМС')]"))));
         driver.findElement(By.xpath("//*[contains(text(),'ДМС')]")).click();
@@ -70,7 +75,7 @@ public class JuniteTest {
     @Parameterized.Parameters
     public static Collection<Object[]> data(){
         Object[][]data = new Object[][]{
-                {"Иванов", "Иван", "Иванович"},{"Петрова", "Анна", "Владимировна"},{"В голове", "Моей", "Опилки"}
+                {"Иванов", "Иван", "Иванович"},{"Петрова", "Анна", "Владимировна"},{"Акулёнок", "Туру", "Руруру"}
         };
         return Arrays.asList(data);
     }
@@ -85,10 +90,12 @@ public class JuniteTest {
         fillField(By.name("MiddleName"), middleName);
         new Select(driver.findElement(By.name("Region"))).selectByVisibleText("Москва");
         fillField(By.name("Email"), "qwertyqwerty");
-        driver.findElement(By.xpath("//label[contains (text(),'Телефон')]/following-sibling::*")).click();
-        fillField(By.xpath("//label[contains (text(),'Телефон')]/following-sibling::*"), "9876543210");
+        driver.findElement(By.xpath("//div[contains(@class,'col-md-6')]/INPUT[@type='text'][contains (@data-bind,'Phone')]")).click();
+        fillField(By.xpath("//div[contains(@class,'col-md-6')]/INPUT[@type='text'][contains (@data-bind,'Phone')]"), "9876543210");
         fillField(By.name("Comment"), "test");
-        driver.findElement(By.cssSelector("input.checkbox")).click();
+        if (!driver.findElement(By.cssSelector("input.checkbox")).isSelected()) {
+            driver.findElement(By.cssSelector("input.checkbox")).click();
+        }
         driver.findElement(By.id("button-m")).click();
 
 
@@ -99,7 +106,8 @@ public class JuniteTest {
         assertEquals("test", driver.findElement(By.name("Comment")).getAttribute("value"));
 
 
-        assertEquals("+7 (987) 654-32-10", driver.findElement(By.xpath("(//INPUT[@type='text'])[6]")).getAttribute("value"));
+
+      assertEquals("+7 (987) 654-32-10", driver.findElement(By.xpath("//div[contains(@class,'col-md-6')]/INPUT[@type='text'][contains (@data-bind,'Phone')]")).getAttribute("value"));
 
         assertEquals(true, driver.findElement(By.cssSelector("input.checkbox")).isSelected());
         assertEquals("Москва",
@@ -107,10 +115,7 @@ public class JuniteTest {
         assertEquals("Введите адрес электронной почты",
                 driver.findElement(By.xpath("//*[text()='Эл. почта']/..//span[@class='validation-error-text']")).getText());
     }
-    @After
-    public  void last(){
-    driver.findElement(By.cssSelector("input.checkbox")).click();
-    }
+
     @AfterClass
     public static void tearDown() throws Exception {
         driver.quit();
